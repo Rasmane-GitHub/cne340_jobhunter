@@ -89,8 +89,8 @@ def add_or_delete_job(jobpage, cursor):
            print("job is found: " + jobdetails["job_id"] + " from " + jobdetails["job_type"])
 
         else:
-           print("New job is found: " + jobdetails["job_id"]+
-           "from" + jobdetails["job_type"]add_new_job(cursor, jobdetails)
+            print("New job is found: " + jobdetails["job_id"] +" from " + jobdetails["job_type"])
+            add_new_job(cursor, jobdetails)
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
 
@@ -107,7 +107,7 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
-        time.sleep(21600)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
+        time.sleep(14400)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
 # Sleep does a rough cycle count, system is not entirely accurate
