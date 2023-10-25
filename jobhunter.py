@@ -33,6 +33,11 @@ def query_sql(cursor, query):
 # Add a new job
 def add_new_job(cursor, jobdetails):
     # extract all required columns
+    job_id = jobdetails['id']
+    url = jobdetails['url']
+    title = jobdetails['title']
+    #do we add company_logo?
+    company_name = jobdetails['job_company_name']
     description = html2text.html2text(jobdetails['description'])
     date = jobdetails['publication_date'][0:10]
     query = cursor.execute("INSERT INTO jobs( Description, Created_at " ") "
@@ -44,12 +49,14 @@ def add_new_job(cursor, jobdetails):
 # Check if new job
 def check_if_job_exists(cursor, jobdetails):
     ##Add your code here
+    jobid = jobdetails['job_id']
     query = "UPDATE"
     return query_sql(cursor, query)
 
 # Deletes job
 def delete_job(cursor, jobdetails):
     ##Add your code here
+    jobid = jobdetails['job_id']
     query = "UPDATE"
     return query_sql(cursor, query)
 
@@ -79,8 +86,11 @@ def add_or_delete_job(jobpage, cursor):
         is_job_found = len(
         cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
         if is_job_found:
+           print("job is found: " + jobdetails["job_id"] + " from " + jobdetails["job_type"])
 
         else:
+           print("New job is found: " + jobdetails["job_id"]+
+           "from" + jobdetails["job_type"]add_new_job(cursor, jobdetails)
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
 
