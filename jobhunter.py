@@ -5,7 +5,6 @@ import requests
 from datetime import date
 import html2text
 
-
 # Connect to database
 # You may need to edit the connect function based on your local settings.#I made a password for my database because it is important to do so. Also make sure MySQL server is running or it will not connect
 def connect_to_sql():
@@ -21,6 +20,10 @@ def create_tables(cursor):
     # Python is in latin-1 and error (Incorrect string value: '\xE2\x80\xAFAbi...') will occur if Description is not in unicode format due to the json data
     cursor.execute('''CREATE TABLE IF NOT EXISTS jobs (id INT PRIMARY KEY auto_increment, Job_id varchar(50) , 
     company varchar (300), Created_at DATE, url varchar(30000), Title LONGBLOB, Description LONGBLOB ); ''')
+
+
+
+
 
 
 # Query the database.
@@ -43,6 +46,11 @@ def add_new_job(cursor, jobdetails):
                "VALUES(%s,%s,%s,%s,%s,%s)", (job_id, url, title, company, description, date))
      # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
     return query_sql(cursor, query)
+
+
+
+
+
 
 
 # Check if new job
@@ -92,7 +100,24 @@ def add_or_delete_job(jobpage, cursor):
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
 
+def check_expired_job_postings(cursor):
+    # look through the entire database
+    # check each "row" for job posting's date - type(job postings date)
 
+    current_date = date.today()
+    job_posting_date = 0
+    diff = current_date - job_posting_date
+    job_id = 0
+
+    if diff.days >= 14:
+        # delete the job posting
+        delete_job(cursor, {"job_id": job_id})
+
+    # 1. get the current date.today() - 2023-10-28 (Date Object)
+    # 2. Create the date object of the job posting - date(year, month, day) (ints)
+    # 3. current day - job posting date
+    # diff = date.today() -  date(year, month, day)
+    # diff.days -> amount of days: 2
 
 # Setup portion of the program. Take arguments and set up the script
 # You should not need to edit anything here.
@@ -105,6 +130,7 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
+        check_expired_job_postings(cursor)
         time.sleep(14400)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
