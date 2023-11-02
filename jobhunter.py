@@ -23,9 +23,6 @@ def create_tables(cursor):
 
 
 
-
-
-
 # Query the database.
 # You should not need to edit anything in this function
 def query_sql(cursor, query):
@@ -46,11 +43,6 @@ def add_new_job(cursor, jobdetails):
                "VALUES(%s,%s,%s,%s,%s,%s)", (job_id, url, title, company, description, date))
      # %s is what is needed for Mysqlconnector as SQLite3 uses ? the Mysqlconnector uses %s
     return query_sql(cursor, query)
-
-
-
-
-
 
 
 # Check if new job
