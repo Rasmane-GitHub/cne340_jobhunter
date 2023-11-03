@@ -1,5 +1,3 @@
-import datetime
-
 import mysql.connector
 import time
 import json
@@ -88,9 +86,9 @@ def add_or_delete_job(jobpage, cursor):
         if is_job_found:
             # called delete function
             now = date.today()
-            job_today = date.strftime(jobdetails['publication_date'], "%Y-%m-%d %H:%M:%S")
+            job_today = date(2023, 10, 2)
             if (now - job_today).days > 14:
-                print("delete job : " + jobdetails["title"] + " from " + jobdetails["company_name"])
+                print("job is not available")
                 delete_job(cursor, jobdetails)
 
         else:
