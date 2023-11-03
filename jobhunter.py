@@ -1,3 +1,5 @@
+import datetime
+
 import mysql.connector
 import time
 import json
@@ -84,26 +86,23 @@ def add_or_delete_job(jobpage, cursor):
         check_if_job_exists(cursor, jobdetails)
         is_job_found = len(cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
         if is_job_found:
-            print("job is found: " + jobdetails["title"] + " from " + jobdetails["company_name"])
+            # called delete function
+            now = date.today()
+            job_today = date.strftime(jobdetails['publication_date'], "%Y-%m-%d %H:%M:%S")
+            if (now - job_today).days > 14:
+                print("delete job : " + jobdetails["title"] + " from " + jobdetails["company_name"])
+                delete_job(cursor, jobdetails)
 
         else:
             print("New job is found: " + jobdetails["title"] +" from " + jobdetails["company_name"])
             add_new_job(cursor, jobdetails)
+            # check today's date and convert into job date
+            # if now - jobdate < int time
+            # print new job found
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
 
-def check_expired_job_postings(cursor):
-    # look through the entire database
-    # check each "row" for job posting's date - type(job postings date)
 
-    current_date = date.today()
-    job_posting_date = 0
-    diff = current_date - job_posting_date
-    job_id = 0
-
-    if diff.days >= 14:
-        # delete the job posting
-        delete_job(cursor, {"job_id": job_id})
 
     # 1. get the current date.today() - 2023-10-28 (Date Object)
     # 2. Create the date object of the job posting - date(year, month, day) (ints)
@@ -122,7 +121,6 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
-        check_expired_job_postings(cursor)
         time.sleep(14400)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
