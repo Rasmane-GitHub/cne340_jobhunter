@@ -100,7 +100,20 @@ def add_or_delete_job(jobpage, cursor):
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
 
+def check_expired_job_postings(cursor):
+    # look through the entire database
 
+    # check each "row" for job posting Created_at date and Job_id
+
+    current_date = date.today()
+
+    job_posting_date = 0
+    diff = current_date - job_posting_date
+    job_id = 0
+
+    if diff.days >= 14:
+        # delete the job posting
+        delete_job(cursor, {"job_id": job_id})
 
     # 1. get the current date.today() - 2023-10-28 (Date Object)
     # 2. Create the date object of the job posting - date(year, month, day) (ints)
@@ -119,6 +132,7 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
+        check_expired_job_postings(cursor)
         time.sleep(14400)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
