@@ -111,7 +111,9 @@ def check_expired_job_postings(cursor):
     diff = current_date - job_posting_date
     job_id = 0
 
-    if diff.days >= 14:
+    if days.diff 1. get the current date.today() - 2023-10-28 (Date Object)
+
+= 14:
         # delete the job posting
         delete_job(cursor, {"job_id": job_id})
 
@@ -140,4 +142,11 @@ def main():
 # If you want to test if script works change time.sleep() to 10 seconds and delete your table in MySQL
 if __name__ == '__main__':
     main()
-
+ ---------------------------------------------------------------------------------------------
+## function to Delete ---- def delete_job(cursor, jobdetails)
+##Job table Job id is the primary key to identify the job ----Job_id = Jobdails["job_id"]
+## 1 get the current date --- now = date.today()
+## 2 create the date object --- cursor.execute("SELECT job_date FROM jobs WHERE job_id = %y, %M, %d (job_id,))
+## 3 current date - job posting date --- job_date = cursor.fetchone()[]
+##  calculate the diff since posting --- now = date.today, days_diff = (now - job_date).days
+## delete job after 14 days --- cursor.execute("DELETE FROM jobs WHERE job_id = %s, j(job_id,)
