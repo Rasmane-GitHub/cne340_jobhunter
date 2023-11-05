@@ -56,7 +56,7 @@ def check_if_job_exists(cursor, jobdetails):
 def delete_job(cursor, jobdetails):
     # new code added
     job_id = jobdetails['job_id']
-    query = "DELETE FROM jobs WHERE Job_id = \"%s\"" % jobdetails['id']
+    query = "DELETE FROM jobs WHERE Job_id = \"%s\"" % jobdetails
     return query_sql(cursor, query)
 
 
@@ -84,44 +84,52 @@ def add_or_delete_job(jobpage, cursor):
         check_if_job_exists(cursor, jobdetails)
         is_job_found = len(cursor.fetchall()) > 0  # https://stackoverflow.com/questions/2511679/python-number-of-rows-affected-by-cursor-executeselect
         if is_job_found:
-            # called delete function
-            now = date.today()
-            job_today = date(2023, 10, 2)
-            if (now - job_today).days > 14:
-                print("job is not available")
-                delete_job(cursor, jobdetails)
+            if is_job_found:
+                print("job is found: " + jobdetails["title"] + " from " + jobdetails["company_name"])
 
         else:
             print("New job is found: " + jobdetails["title"] +" from " + jobdetails["company_name"])
             add_new_job(cursor, jobdetails)
-            # check today's date and convert into job date
-            # if now - jobdate < int time
-            # print new job found
+
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
 
-def check_expired_job_postings(cursor):
-    # look through the entire database
 
-    # check each "row" for job posting Created_at date and Job_id
-
-    current_date = date.today()
-
-    job_posting_date = 0
-    diff = current_date - job_posting_date
-    job_id = 0
-
-    if diff.day > 14. ## get the current date.today() - 2023-10-28 (Date Object)
-
-
+def check_expired_job_postings(cursor, job_id):
+    # look through the entire database - write a sql query (can use query_sql())
+     cursor.execute("SELECT Job_id, Created_at FROM jobs")
+     #cursor.execute("DELETE FROM jobs WHERE job_id = %s", (job_id))   # new code added
+     jobs = cursor.fetchall()
+     job_date = 0
+     now = date.today()
+     job_id = 0
+     diff = (now - (job_date))
+     if diff.days > 14:  # get the current date.today() - 2023-10-28 (Date Object)
         # delete the job posting
         delete_job(cursor, {"job_id": job_id})
+
+
+
+    # .fetchall()
+
+    # check each "row" for job posting Created_at date and Job_id - iterating through in a loop
+
+    # check the type of the Created_at value using type() - to see if it's a string type or a date type
+
+
+
+## diff = current_date - job_posting_date
+
+
+# get the current date.today() - 2023-10-28 (Date Object)
+        # delete the job posting
 
     # 1. get the current date.today() - 2023-10-28 (Date Object)
     # 2. Create the date object of the job posting - date(year, month, day) (ints)
     # 3. current day - job posting date
     # diff = date.today() -  date(year, month, day)
     # diff.days -> amount of days: 2
+
 
 # Setup portion of the program. Take arguments and set up the script
 # You should not need to edit anything here.
@@ -134,7 +142,7 @@ def main():
 
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
-        check_expired_job_postings(cursor)
+        check_expired_job_postings(cursor, 'job_id')
         time.sleep(14400)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
@@ -142,11 +150,11 @@ def main():
 # If you want to test if script works change time.sleep() to 10 seconds and delete your table in MySQL
 if __name__ == '__main__':
     main()
- ---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 ## function to Delete ---- def delete_job(cursor, jobdetails)
 ##Job table Job id is the primary key to identify the job ----Job_id = Jobdails["job_id"]
 ## 1 get the current date --- now = date.today()
 ## 2 create the date object --- cursor.execute("SELECT job_date FROM jobs WHERE job_id = %y, %M, %d (job_id,))
-## 3 current date - job posting date --- job_date = cursor.fetchone()[]
-##  calculate the diff since posting --- now = date.today, days_diff = (now - job_date).days
+## 3 current date - job posting date --- job_date = cursor.fetchall()
+##  calculate the diff since posting --- now = date.today, days_diff = (now - job_date)
 ## delete job after 14 days --- cursor.execute("DELETE FROM jobs WHERE job_id = %, (job_id,)
