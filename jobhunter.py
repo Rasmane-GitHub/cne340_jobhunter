@@ -1,3 +1,8 @@
+# Name: Rasmane Sawadogo
+# NETWORK DATABASES (SQL) Fall Quarter 2023 - CNE 340 – 11/05/2023
+# Challenge: Job Hunter
+# Collaborator: Rosa Hulbert
+
 import mysql.connector
 import time
 import json
@@ -102,7 +107,7 @@ def check_expired_job_postings(cursor):
     for job in job_postings:
         job_id = job[0]
         job_date = job[1]
-        diff = now - job_date
+        diff = now - job_date # source: https://stackoverflow.com/questions/151199/how-to-calculate-number-of-days-between-two-given-dates
         if diff.days > 14:
            delete_job(cursor, {"job_id": job_id})
 
@@ -121,7 +126,7 @@ def main():
     while (1):  # Infinite Loops. Only way to kill it is to crash or manually crash it. We did this as a background process/passive scraper
         jobhunt(cursor)
         check_expired_job_postings(cursor)
-        time.sleep(14400)  # Sleep for 1h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
+        time.sleep(14400)  # Sleep for 4h, this is ran every hour because API or web interfaces have request limits. Your reqest will get blocked.
 
 
 # Sleep does a rough cycle count, system is not entirely accurate
