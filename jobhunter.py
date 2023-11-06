@@ -108,12 +108,6 @@ def check_expired_job_postings(cursor):
 
     print("all jobs are now up to date")
 
-    # .fetchall()
-
-    # check each "row" for job posting Created_at date and Job_id - iterating through in a loop
-
-    # check the type of the Created_at value using type() - to see if it's a string type or a date type
-
 
 # Setup portion of the program. Take arguments and set up the script
 # You should not need to edit anything here.
