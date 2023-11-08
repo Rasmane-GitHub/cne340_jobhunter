@@ -1,5 +1,5 @@
 # Name: Rasmane Sawadogo
-# NETWORK DATABASES (SQL) Fall Quarter 2023 - CNE 340 – 11/05/2023
+# NETWORK DATABASES (SQL) Fall Quarter 2023 - CNE 340 – 11/07/2023
 # Challenge: Job Hunter
 # Collaborator: Rosa Hulbert
 
@@ -36,7 +36,8 @@ def query_sql(cursor, query):
 
 
 # Add a new job
-def add_new_job(cursor, jobdetails):
+def add_new_job(cursor,
+                 jobdetails):
     # extract all required columns
     job_id = jobdetails['id']
     url = jobdetails['url']
@@ -90,11 +91,17 @@ def add_or_delete_job(jobpage, cursor):
         if is_job_found:
             print("job is found: " + jobdetails["title"] + " from " + jobdetails["company_name"])
         else:
-            print("New job is found: " + jobdetails["title"] +" from " + jobdetails["company_name"])
+            print("New job is found: " + jobdetails["title"] + " from " + jobdetails["company_name"])
             add_new_job(cursor, jobdetails)
+            notify_user("New job posted!", jobdetails["title"])
 
             # INSERT JOB
             # Add in your code here to notify the user of a new posting. This code will notify the new user
+
+# Add in your code here to notify the user of a new posting. This code will notify the new user
+def notify_user(message, job_title):  # new code
+    print(message)
+    print("Job Title:", job_title)
 
 
 def check_expired_job_postings(cursor):
